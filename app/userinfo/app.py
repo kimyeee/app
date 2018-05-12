@@ -31,8 +31,10 @@ class RegisterPageHandler(tornado.web.RequestHandler):
 
     def post(self, *args, **kwargs):
         current_nonce = 123456789
-        check_sum = self.hash_sha.update(self.AppKey + str(current_nonce) + str(time.time()))
+        check_str = self.AppKey + str(current_nonce) + str(time.time())
+        check_sum = self.hash_sha.update(check_str.encode('utf8'))
         headers = {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
             'AppKey': self.AppKey,
             'Nonce': current_nonce,
             'CurTime': time.time(),
@@ -41,8 +43,9 @@ class RegisterPageHandler(tornado.web.RequestHandler):
         userinfo_dict = {'accid': 'test001', 'name': 'test'}
         response = requests.post('https://api.netease.im/nimserver/user/create.action', headers=headers,
                                  json=userinfo_dict)
-
-        self.render('index.html')
+        print(response.content)
+        print(response.text)
+        self.write(response.content)
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -66,7 +69,7 @@ class Application(tornado.web.Application):
             (r'/register', RegisterPageHandler),
             (r'/', IndexPageHandler),
         ]
-        settings = {"static_path": r"C:\Users\555\PycharmProjects\app"}
+        settings = {"static_path": r"C:\Users\555\PycharmProjects\static"}
         super().__init__(handlers, **settings)
 
 
