@@ -1,0 +1,1 @@
+from api.test import api_views
