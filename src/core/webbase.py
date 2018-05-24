@@ -3,7 +3,7 @@
 """
     web基类
 """
-
+import time
 from tornado.web import RequestHandler
 import datetime
 from src.core import error
@@ -104,4 +104,11 @@ class WebHandler(RequestHandler):
         elif isinstance(ex, error.SessionError):
             self.do_http_error(ex.http_code, ex.err_msg)
         else:
-            self.do_http_error(500, 'SYSTEM ERRROR')
+            time.sleep(2)
+            self.write('<div>status_code:404</div><div>SYSTEM ERROR</div>')
+
+
+class DefaultHandler(WebHandler):
+
+    def prepare(self):
+        self.render('index.html')

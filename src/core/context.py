@@ -4,7 +4,7 @@
 """
 
 from tornado.options import options
-from src.core.routes import route
+from core.routes import route
 
 from src.utils import log as logger
 

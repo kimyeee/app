@@ -32,9 +32,7 @@ class route(object):
     def __call__(self, _handler):
         """ gets called when we class decorate
         """
-        print(self._routes)
         self._routes.append({'uri': self.uri, 'name': self.name, 'handler': _handler})
-        print(self._routes)
         return _handler
 
     @classmethod
@@ -45,7 +43,6 @@ class route(object):
         for dir in dirs:
             s = 'import %s' % dir
             exec(s)
-            import api
         routes = []
         for handler_dic in cls._routes:
             routes.append((handler_dic.get('uri'), handler_dic.get('handler')))

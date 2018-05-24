@@ -1,4 +1,5 @@
 import sys
+import tornado
 import tornado.ioloop
 import tornado.web
 import conf
@@ -7,14 +8,16 @@ import tornado.httpserver
 from utils import log as logger
 from core.context import TornadoContext
 
-
 # define("port", default=8008, help="run on th given port", type=int)
+from core.webbase import DefaultHandler
+
+from src.urls import urls
 
 
 class Application(tornado.web.Application):
     def __init__(self, http_port):
         settings = {
-            'template_path': r'C:\Users\555\PycharmProjects\ON_app\static',
+            'template_path': r'C:\Users\555\PycharmProjects\ON_app\src\static',
             'run_mode': conf.RUN_MODE,
             'log_path': conf.LOG_CONFIG.get('path'),
             'log_name': conf.LOG_CONFIG.get('filename'),
@@ -22,11 +25,13 @@ class Application(tornado.web.Application):
             'mysql_config': conf.MYSQL_CONFIG,
             'handler_pathes': ['api'],
             'http_port': http_port,
-            'debug':True
+            'debug': True
         }
         t_context = TornadoContext(**settings)
+        t_context.handlers+=urls
+        t_context.handlers.append(('/.*', DefaultHandler))
         print(t_context.handlers)
-        super().__init__(handlers=t_context.handlers, **settings)
+        super().__init__(t_context.handlers, **settings)
 
 
 def main(port):

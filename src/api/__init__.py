@@ -1,1 +1,1 @@
-from api.test import api_views
+from api.test import views

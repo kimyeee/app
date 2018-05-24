@@ -10,7 +10,7 @@ MYSQL_CONFIG = {
     'user': 'root',
     'password': '123456',
     'cursorclass': pymysql.cursors.DictCursor,
-    'charset': 'utf8'
+    'charset': 'utf8mb4'
 }
 
 
