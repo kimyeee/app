@@ -27,7 +27,6 @@ class ParamsError(Exception):
 class SystemError(Exception):
     """ 系统内部错误
     """
-
     def __init__(self, err_msg='SYSTEM ERRROR', http_code=500):
         super(SystemError, self).__init__()
         self.http_code = http_code
